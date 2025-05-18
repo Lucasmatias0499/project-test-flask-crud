@@ -56,7 +56,7 @@ def get_user(user_id):
         return jsonify({"error": "Erro interno ao obter usuário."}), 500
     
    
-@user_bp.route('/users/<int:user_id>': methods=['PUT'])
+@user_bp.route('/users/<int:user_id>', methods=['PUT'])
 def update_user(user_id):
     data = request.get_json()
     name = data.get('name')
