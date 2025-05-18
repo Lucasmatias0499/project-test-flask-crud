@@ -73,3 +73,21 @@ def update_user(user_id):
     except Exception as e:
         logger.error(f"Erro ao atualizar usuário: {e}")
         return jsonify({"error": "Erro interno ao atualizar usuário."}), 500
+
+
+@user_bp.route('/users/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    logger.info(f"Recebida requisição para deletar usuário com id={user_id}.")
+    try:
+        user = user_repo.get_by_id(user_id)
+        if not user:
+            logger.warning(f"Tentativa de deletar usuário inexistente: id={user_id}")
+            return jsonify({"error": "Usuário não encontrado."}), 404
+
+        name = user.name
+        user_repo.delete(user_id)
+        logger.info(f"Usuário deletado com sucesso: id={user_id}, name={name}")
+        return jsonify({"message": f"Usuário {name} deletado com sucesso."}), 200
+    except Exception as e:
+        logger.error(f"Erro ao deletar usuário: {e}")
+        return jsonify({"error": "Erro interno ao deletar usuário."}), 500
