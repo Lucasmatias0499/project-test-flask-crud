@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 @user_bp.route('/users', methods=['POST'])
 def create_user():
-    data = request.get_json()
+    data = request.get_json(silent=True)
     if not data:
         logger.warning("JSON inválido ou não enviado.")
         return jsonify({"error": "JSON inválido ou não enviado."}), 400
@@ -61,7 +61,7 @@ def get_user(user_id):
    
 @user_bp.route('/users/<int:user_id>', methods=['PUT'])
 def update_user(user_id):
-    data = request.get_json()
+    data = request.get_json(silent=True)
     if not data:
         logger.warning("JSON inválido ou não enviado.")
         return jsonify({"error": "JSON inválido ou não enviado."}), 400
