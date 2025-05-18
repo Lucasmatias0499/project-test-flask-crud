@@ -12,6 +12,9 @@ logger = logging.getLogger(__name__)
 @user_bp.route('/users', methods=['POST'])
 def create_user():
     data = request.get_json()
+    if not data:
+        logger.warning("JSON inválido ou não enviado.")
+        return jsonify({"error": "JSON inválido ou não enviado."}), 400
     name = data.get('name')
     logger.info(f"Recebida requisição para criar usuário: {data}")
     error = User.validate_name(name)
@@ -59,6 +62,9 @@ def get_user(user_id):
 @user_bp.route('/users/<int:user_id>', methods=['PUT'])
 def update_user(user_id):
     data = request.get_json()
+    if not data:
+        logger.warning("JSON inválido ou não enviado.")
+        return jsonify({"error": "JSON inválido ou não enviado."}), 400
     name = data.get('name')
     logger.info(f"Recebida requisição para atualizar usuário com id={user_id}: {data}")
     error = User.validate_name(name)
@@ -67,9 +73,13 @@ def update_user(user_id):
         logger.warning(f"Falha na validação do nome: {error}")
         return jsonify({"error": error}), 400
     try:
+        if not user_repo.get_by_id(user_id):
+            logger.warning(f"Usuário com id={user_id} não encontrado para atualização.")
+            return jsonify({"error": "Usuário não encontrado."}), 404
         user_repo.update(user_id, name)
+        updated_user = user_repo.get_by_id(user_id)
         logger.info(f"Usuário atualizado com sucesso: id={user_id}, name={name}")
-        return jsonify({"id": user_id, "name": name}), 200
+        return jsonify(updated_user.to_dict()), 200
     except Exception as e:
         logger.error(f"Erro ao atualizar usuário: {e}")
         return jsonify({"error": "Erro interno ao atualizar usuário."}), 500
