@@ -9,6 +9,9 @@ class User:
     def to_dict(self):
         return {"id": self.id, "name": self.name}
     
+    def __repr__(self):
+        return f"<User id={self.id} name={self.name}>"    
+    
     @staticmethod
     def validate_name(name):
         if not name:

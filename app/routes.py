@@ -8,6 +8,7 @@ user_repo = UserRepository()
 
 logger = logging.getLogger(__name__)
 
+
 @user_bp.route('/users', methods=['POST'])
 def create_user():
     data = request.get_json()
@@ -25,3 +26,15 @@ def create_user():
     except Exception as e:
         logger.error(f"Erro ao criar usuário: {e}")
         return jsonify({"error": "Erro interno ao criar usuário."}), 500
+
+
+@user_bp.route('/users', methods=['GET'])
+def get_users():
+    logger.info("Recebida requisição para obter todos os usuários.")
+    try:
+        users = user_repo.get_all()
+        logger.info(f"Todos os usuários listados com sucesso")
+        return jsonify([user.to_dict() for user in users]), 200
+    except Exception as e:
+        logger.error(f"Erro ao obter usuários: {e}")
+        return jsonify({"error": "Erro interno ao obter usuários."}), 500
