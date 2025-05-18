@@ -38,3 +38,19 @@ def get_users():
     except Exception as e:
         logger.error(f"Erro ao obter usuários: {e}")
         return jsonify({"error": "Erro interno ao obter usuários."}), 500
+    
+
+@user_bp.route('/users/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    logger.info(f"Recebida requisição para obter usuário com id={user_id}.")
+    try:
+        user = user_repo.get_by_id(user_id)
+        if user:
+            logger.info(f"Usuário encontrado: {user.to_dict()}")
+            return jsonify(user.to_dict()), 200
+        else:
+            logger.warning(f"Usuário com id={user_id} não encontrado.")
+            return jsonify({"error": "Usuário não encontrado."}), 404
+    except Exception as e:
+        logger.error(f"Erro ao obter usuário: {e}")
+        return jsonify({"error": "Erro interno ao obter usuário."}), 500

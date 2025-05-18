@@ -17,3 +17,12 @@ class UserRepository:
             users = cursor.fetchall()
             users = [User(id=row[0], name=row[1]) for row in users]
             return users
+        
+    def get_by_id(self, user_id):
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
+            user = cursor.fetchone()
+            if user:
+                return User(id=user[0], name=user[1])
+            return None
