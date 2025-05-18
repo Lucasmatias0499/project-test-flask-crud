@@ -26,3 +26,10 @@ class UserRepository:
             if user:
                 return User(id=user[0], name=user[1])
             return None
+        
+    def update(self, user_id, name):
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE users SET name = ? WHERE id = ?", (name, user_id))
+            conn.commit()
+                

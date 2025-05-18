@@ -54,3 +54,22 @@ def get_user(user_id):
     except Exception as e:
         logger.error(f"Erro ao obter usuário: {e}")
         return jsonify({"error": "Erro interno ao obter usuário."}), 500
+    
+   
+@user_bp.route('/users/<int:user_id>': methods=['PUT'])
+def update_user(user_id):
+    data = request.get_json()
+    name = data.get('name')
+    logger.info(f"Recebida requisição para atualizar usuário com id={user_id}: {data}")
+    error = User.validate_name(name)
+    
+    if error:
+        logger.warning(f"Falha na validação do nome: {error}")
+        return jsonify({"error": error}), 400
+    try:
+        user_repo.update(user_id, name)
+        logger.info(f"Usuário atualizado com sucesso: id={user_id}, name={name}")
+        return jsonify({"id": user_id, "name": name}), 200
+    except Exception as e:
+        logger.error(f"Erro ao atualizar usuário: {e}")
+        return jsonify({"error": "Erro interno ao atualizar usuário."}), 500
