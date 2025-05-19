@@ -1,15 +1,7 @@
 from app.database import get_connection
 from app.models import User
 
-class UserRepository:
-    def add(self, name):
-        with get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute("INSERT INTO users (name) VALUES (?)", (name,))
-            conn.commit()
-            register = cursor.lastrowid
-            return register
-        
+class UserRepository:    
     def get_all(self):
         with get_connection() as conn:
             cursor = conn.cursor()
@@ -26,6 +18,14 @@ class UserRepository:
             if user:
                 return User(id=user[0], name=user[1])
             return None
+        
+    def add(self, name):
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO users (name) VALUES (?)", (name,))
+            conn.commit()
+            register = cursor.lastrowid
+            return register
         
     def update(self, user_id, name):
         with get_connection() as conn:
