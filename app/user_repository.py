@@ -32,6 +32,7 @@ class UserRepository:
             cursor = conn.cursor()
             cursor.execute("UPDATE users SET name = ? WHERE id = ?", (name, user_id))
             conn.commit()
+        return self.get_by_id(user_id)
     
     def delete(self, user_id):
         with get_connection() as conn:

@@ -43,7 +43,7 @@ requirements.txt
 Execute no terminal:
 
 ```sh
-python -m unittest discover -s tests -v
+python -m unittest -v tests/routes_test.py
 ```
 
 ## Exemplo de requisição
