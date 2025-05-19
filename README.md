@@ -2,6 +2,43 @@
 
 Este projeto é uma API RESTful de CRUD de usuários desenvolvida com Flask e SQLite.
 
+```text
+┌──────────────────────────────┐
+│         Cliente (API)        │
+│    (Insomnia, navegador)     │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│         Flask Server         │
+│           (run.py)           │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│          Rotas API           │
+│        (app/routes.py)       │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│   Operações CRUD/DB Access   │
+│   (app/user_repository.py)   │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│           Modelos            │
+│        (app/models.py)       │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│        Banco de Dados        │
+│           (SQLite)           │
+└──────────────────────────────┘
+```
+
 ## Funcionalidades
 
 - Criar usuário (`POST /users`)
